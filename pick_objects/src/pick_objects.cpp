@@ -29,9 +29,12 @@ int main(int argc, char** argv){
 
 
   // Define a position and orientation for the robot to reach
+  // pick up
   goal_pick.target_pose.pose.position.x = -3.5;
   goal_pick.target_pose.pose.position.y = 5.5;
   goal_pick.target_pose.pose.orientation.w = 1.57;
+
+  // drop off
   goal_drop.target_pose.pose.position.x = 3.5;
   goal_drop.target_pose.pose.position.y = -3.5;
   goal_drop.target_pose.pose.orientation.w = 1.57;

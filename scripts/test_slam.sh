@@ -1,6 +1,6 @@
 #!/bin/sh
 sleep 5
-xterm  -e  " source /opt/ros/kinetic/setup.bash; roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=/home/shaza/catkin_ws/src/RoboticsNDFinalProject/worlds/building5.world" & 
+xterm  -e  " source /opt/ros/kinetic/setup.bash; roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$(rospack find pick_objects)/../worlds/building5.world" & 
 sleep 5
 xterm  -e  " source /opt/ros/kinetic/setup.bash; roslaunch turtlebot_gazebo gmapping_demo.launch" &
 sleep 5

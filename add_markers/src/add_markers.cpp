@@ -79,4 +79,9 @@ int main( int argc, char** argv )
     ros::Duration(5.0).sleep();  // Sleep for five seconds
    
   }
+
+
+  // Handle ROS communication events
+  ros::spin();
+  return 0;
 }
