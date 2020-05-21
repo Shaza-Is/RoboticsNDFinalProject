@@ -1,5 +1,5 @@
 # RoboticsNDFinalProject
-A repository containing the fifth [final] project in Udacity's Robotics Software Engineer Nanodegree: a home service robot picking up a marker from a fixed position and droping it off to another position. Using the [turtle_bot] (http://wiki.ros.org/action/show/Robots/TurtleBot?action=show&redirect=TurtleBot) library.
+A repository containing the fifth [final] project in Udacity's Robotics Software Engineer Nanodegree: a home service robot picking up a marker from a fixed position and droping it off to another position. Using the [turtle_bot](http://wiki.ros.org/action/show/Robots/TurtleBot?action=show&redirect=TurtleBot) library.
 
 
 * #### SLAM
