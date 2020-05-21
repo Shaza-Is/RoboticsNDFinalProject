@@ -10,10 +10,19 @@ int main( int argc, char** argv )
 
   // Set our initial shape type to be a cube
   uint32_t shape = visualization_msgs::Marker::CUBE;
+  bool marker_on = true;
+  bool object_picked = false;
+  bool object_delivered = false;
 
-  if (ros::ok())
+  while (ros::ok())
   {
     visualization_msgs::Marker marker;
+
+    //
+    
+    n.getParam("/object_picked", object_picked);
+    
+    n.getParam("/object_delivered", object_delivered);
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
     marker.header.frame_id = "/map";
     marker.header.stamp = ros::Time::now();
@@ -30,13 +39,15 @@ int main( int argc, char** argv )
     marker.action = visualization_msgs::Marker::ADD;
 
     // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header [PICK UP]
-    marker.pose.position.x = -3.5;
-    marker.pose.position.y = 5.5;
-    marker.pose.position.z = 0;
-    marker.pose.orientation.x = 0.0;
-    marker.pose.orientation.y = 0.0;
-    marker.pose.orientation.z = 0.0;
-    marker.pose.orientation.w = 1.0;
+    if((!object_picked)){
+      marker.pose.position.x = -3.5;
+      marker.pose.position.y = 5.5;
+      marker.pose.position.z = 0;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+    }
 
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
     marker.scale.x = 0.2;
@@ -61,22 +72,37 @@ int main( int argc, char** argv )
       ROS_WARN_ONCE("Please create a subscriber to the marker");
       sleep(1);
     }
-    ROS_INFO("Marker at pick up");
-    marker_pub.publish(marker);
-    ros::Duration(5.0).sleep();  // Sleep for five seconds
-    marker.action = visualization_msgs::Marker::DELETE;
-    ROS_INFO("Marker picked up");
-    marker_pub.publish(marker);
-    ros::Duration(5.0).sleep();  // Sleep for five seconds
-    // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header [DROP OFF]
-    marker.action = visualization_msgs::Marker::ADD;
-    marker.pose.position.x = 3.5;
-    marker.pose.position.y = -3.5;
+    if((!object_picked)){
+      ROS_INFO("Marker at pick up");
+      marker_pub.publish(marker);
+      ros::Duration(5.0).sleep();  // Sleep for five seconds
+    }
 
-    marker.pose.orientation.w = 1.0;
-    ROS_INFO("Marker delivered");
-    marker_pub.publish(marker);
-    ros::Duration(5.0).sleep();  // Sleep for five seconds
+    if((object_picked) && (!object_delivered) && marker_on ){
+      marker.pose.position.x = -3.5;
+      marker.pose.position.y = 5.5;
+      marker.pose.position.z = 0;
+      marker.pose.orientation.x = 0.0;
+      marker.pose.orientation.y = 0.0;
+      marker.pose.orientation.z = 0.0;
+      marker.pose.orientation.w = 1.0;
+      marker.action = visualization_msgs::Marker::DELETE;
+      ROS_INFO("Marker picked up");
+      marker_pub.publish(marker);
+      ros::Duration(5.0).sleep();  // Sleep for five seconds
+      marker_on = false;
+    }
+    // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header [DROP OFF]
+    if(object_delivered){
+      marker.action = visualization_msgs::Marker::ADD;
+      marker.pose.position.x = 3.5;
+      marker.pose.position.y = -3.5;
+
+      marker.pose.orientation.w = 1.0;
+      ROS_INFO("Marker delivered");
+      marker_pub.publish(marker);
+      ros::Duration(5.0).sleep();  // Sleep for five seconds
+    }
    
   }
 
